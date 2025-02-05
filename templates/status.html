@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Application Results / Status</title>
+    <meta http-equiv="X_UA-Compatible" content="IE=9">
+    <meta http-equiv="Expires" content="-1">
+    <link rel="stylesheet" type="text/css" href="/itsincludes/css/itscustom.css">
+    <script type="text/javascript" src="/itsincludes/js/its_scripts.js"></script>
+    <script type="text/javascript" src="/itsincludes/js/overlib.js"></script>
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="framebody" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
+    <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
+    <div id="listedDiv">
+        <h3>Application Results / Status</h3>
+        <table id="mi_userdet" class="mi_userdet" cellspacing="0" cellpadding="0" border="1">
+            <tbody>
+                <tr>
+                    <td align="left">
+                        <b>Student Number:</b> {{ student.student_number }} <br>
+                        <b>ID Number:</b> {{ student.id_number }} <br>
+                        <b>Name:</b> {{ student.name }} <br>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br><br>
+        <table class="rltable" cellspacing="0" cellpadding="2">
+            <tbody>
+                <tr class="rlheader">
+                    <td class="datahdl">Year</td>
+                    <td class="datahdl">Qualification</td>
+                    <td class="datahdl">Faculty</td>
+                    <td class="datahdl">Status</td>
+                    <td class="datahdl">Academic<br>Choice</td>
+                    <td class="datahdl">Application<br>Letter</td>
+                </tr>
+                {% for course in student.courses %}
+                <tr>
+                    <td>{{ course.year }}</td>
+                    <td>{{ course.qualification }}</td>
+                    <td>{{ course.faculty }}</td>
+                    <td>{{ course.status }}</td>
+                    <td>{{ course.choice }}</td>
+                    <td><a href="#">{{ course.letter_date }}</a></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center;">No records found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br><br>
+    </div>
+<!-- Restart Button -->
+        <button onclick="restartApplication()">Restart</button>
+
+
+
+    <!-- JavaScript for Restart Button -->
+    <script>
+        function restartApplication() {
+            window.location.href = "/";
+        }
+    </script>
+
+</body>
+</html>

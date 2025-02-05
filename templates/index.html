@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ITS iEnabler</title>
+    <meta http-equiv="X_UA-Compatible" content="IE=9">
+    <meta http-equiv="Expires" content="-1">
+    <link rel="stylesheet" type="text/css" href="/itsincludes/css/itscustom.css">
+    <script type="text/javascript" src="/itsincludes/js/its_scripts.js"></script>
+    <script type="text/javascript" src="/itsincludes/js/overlib.js"></script>
+    <meta name="SKYPE_TOOLBAR" content="SKYPE_TOOLBAR_PARSER_COMPATIBLE">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script language="Javascript1.2">
+        function Call_calendar(ctl) {
+            if (ctl.value == '') {
+                ctl.value = '08-JAN-2025';
+            }
+            window.dateField = ctl;
+            calendar = window.open('w01pkg.call_cal', 'cal', 'WIDTH=250,HEIGHT=350');
+            return false;
+        }
+    </script>
+    <script language="Javascript1.2">
+        function chk_mandatory() {
+            if ((document.frmOne.x_idno.value != "") ||
+                (document.frmOne.x_idno.value == "" &&
+                    document.frmOne.x_surn.value == "" &&
+                    document.frmOne.x_names.value == "" &&
+                    document.frmOne.x_birdat.value == "")) {
+                document.getElementById("z_idno").style.display = "block";
+                document.getElementById("z_surn").style.display = "none";
+                document.getElementById("z_names").style.display = "none";
+                document.getElementById("z_birdat").style.display = "none";
+            } else {
+                document.getElementById("z_idno").style.display = "none";
+                document.getElementById("z_surn").style.display = "block";
+                document.getElementById("z_names").style.display = "block";
+                document.getElementById("z_birdat").style.display = "block";
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-image: url('/itsimages/TUT10year.jpg');
+            background-repeat: no-repeat;
+            background-position: left top;
+            background-size: 100% 180px;
+        }
+        #alignInMiddle {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 180px;
+            width: 80%;
+            background-color: #ECE9D8;
+            position: relative;
+            border: 1px solid black;
+        }
+        .calendar-icon {
+            font-size: 18px;
+            cursor: pointer;
+            color: blue;
+        }
+    </style>
+</head>
+<body class="framebody" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
+    <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;"></div>
+    <script>
+        function noBack() {
+            window.history.forward();
+        }
+        noBack();
+        window.onload = noBack;
+        window.onpageshow = function(evt) {
+            if (evt.persisted) noBack();
+        }
+        window.onunload = function() {
+            void (0);
+        }
+    </script>
+    <form name="frmOne" method="POST">
+        <div id="alignInMiddle">
+            <h3>Enter ID Number to be able to see Application Status and Student Number</h3>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>ID Number</td>
+                        <td width="10px"><font class="mandatory_fld" id="z_idno" style="display: block;">*</font></td>
+                        <td width="90%"><input type="text" name="x_idno" size="15" maxlength="15" value="" id="x_idno"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><h3>Alternatively: Enter the following if you don't have an ID Number</h3></td>
+                    </tr>
+                    <tr>
+                        <td>Surname</td>
+                        <td><font class="mandatory_fld" id="z_surn" style="display: none;"></font></td>
+                        <td><input type="text" name="x_surn" size="30" maxlength="30" value=""></td>
+                    </tr>
+                    <tr>
+                        <td>Full Name</td>
+                        <td><font class="mandatory_fld" id="z_names" style="display: none;"></font></td>
+                        <td><input type="text" name="x_names" size="30" maxlength="40" value=""></td>
+                    </tr>
+                    <tr>
+                        <td>Date of Birth</td>
+                        <td><font class="mandatory_fld" id="z_birdat" style="display: none;"></font></td>
+                        <td>
+                            <input type="text" name="x_birdat" size="12" maxlength="11" value=""/>
+                            <a onclick="return Call_calendar(document.frmOne.x_birdat);" href="#" class="calendar-icon">
+                                <img src="{{ url_for('static', filename='calendar.gif') }}" alt="Calendar Icon">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="Submit">
+            <input type="button" value="Restart" onclick="location.replace('/')">
+            <br><br>
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
+            {% endif %}
+        </div>
+    </form>
+</body>
+</html>
