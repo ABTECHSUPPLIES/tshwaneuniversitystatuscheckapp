@@ -1,0 +1,1 @@
+Django==5.1.6 gunicorn==23.0.0 psycopg2-binary==2.9.10 dj-database-url==2.3.0 whitenoise==6.9.0 python-dotenv==1.0.1 django-crispy-forms==2.3 openai==0.28.0
