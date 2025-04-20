@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel - Manage Students & Courses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function selectStudent() {
+            let selectedId = document.getElementById("student_select").value;
+            let studentForms = document.getElementsByClassName("student-form");
+
+            for (let i = 0; i < studentForms.length; i++) {
+                studentForms[i].style.display = "none";
+            }
+
+            if (selectedId) {
+                document.getElementById("student_" + selectedId).style.display = "block";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Admin Panel - Manage Students & Courses</h2>
+
+    <!-- Add New Student -->
+    <div class="form-section">
+        <h3>Add New Student</h3>
+        <form method="POST">
+            <input type="hidden" name="action" value="add_student">
+            <input type="text" name="student_number" placeholder="Student Number" required>
+            <input type="text" name="id_number" placeholder="ID Number" required>
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="text" name="birth_date" placeholder="Birth Date (DD-MMM-YYYY)" required>
+            <button type="submit">Add Student</button>
+        </form>
+    </div>
+
+    <h3>Select a Student to Edit</h3>
+    <select id="student_select" onchange="selectStudent()">
+        <option value="">-- Select a Student --</option>
+        {% for id_number, student in students.items() %}
+        <option value="{{ id_number }}">{{ student.name }} ({{ student.id_number }})</option>
+        {% endfor %}
+    </select>
+
+    <!-- Student List -->
+    {% for id_number, student in students.items() %}
+    <div id="student_{{ id_number }}" class="student-form" style="display: none;">
+        <h3>Edit Student</h3>
+        <form method="POST">
+            <input type="hidden" name="action" value="edit_student">
+            <input type="hidden" name="id_number" value="{{ id_number }}">
+            <input type="text" name="student_number" value="{{ student.student_number }}" required>
+            <input type="text" name="name" value="{{ student.name }}" required>
+            <input type="text" name="birth_date" value="{{ student.birth_date }}" required>
+            <button type="submit">Save Changes</button>
+        </form>
+
+        <h3>Courses for {{ student.name }}</h3>
+        <table border="1">
+            <tr>
+                <th>Year</th>
+                <th>Qualification</th>
+                <th>Faculty</th>
+                <th>Status</th>
+                <th>Choice</th>
+                <th>Application Letter</th>
+                <th>Actions</th>
+            </tr>
+            {% for course in student.courses %}
+            <tr>
+                <td><input type="text" name="course_year_{{ id_number }}_{{ loop.index0 }}" value="{{ course.year }}" required></td>
+                <td><input type="text" name="course_qualification_{{ id_number }}_{{ loop.index0 }}" value="{{ course.qualification }}" required></td>
+                <td><input type="text" name="course_faculty_{{ id_number }}_{{ loop.index0 }}" value="{{ course.faculty }}" required></td>
+                <td><input type="text" name="course_status_{{ id_number }}_{{ loop.index0 }}" value="{{ course.status }}" required></td>
+                <td><input type="text" name="course_choice_{{ id_number }}_{{ loop.index0 }}" value="{{ course.choice }}" required></td>
+                <td><input type="text" name="course_letter_date_{{ id_number }}_{{ loop.index0 }}" value="{{ course.letter_date }}" required></td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="action" value="delete_course">
+                        <input type="hidden" name="id_number" value="{{ id_number }}">
+                        <input type="hidden" name="course_index" value="{{ loop.index0 }}">
+                        <button type="submit" onclick="return confirm('Delete this course?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h4>Add Course</h4>
+        <form method="POST">
+            <input type="hidden" name="action" value="add_course">
+            <input type="hidden" name="id_number" value="{{ id_number }}">
+            <input type="text" name="year" placeholder="Year" required>
+            <input type="text" name="qualification" placeholder="Qualification" required>
+            <input type="text" name="faculty" placeholder="Faculty" required>
+            <input type="text" name="status" placeholder="Status" required>
+            <input type="text" name="choice" placeholder="Choice" required>
+            <input type="text" name="letter_date" placeholder="Application Letter Date" required>
+            <button type="submit">Add Course</button>
+        </form>
+    </div>
+    {% endfor %}
+
+</body>
+</html>
